@@ -1,60 +1,73 @@
 'use client'
 
 import { Box, Container, Heading, Text, SimpleGrid, Button } from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
 
 export default function Contact() {
+    const [isSmallScreen, setIsSmallScreen] = useState(false)
+
+    useEffect(() => {
+        const checkWidth = () => {
+            setIsSmallScreen(window.innerWidth < 900)
+        }
+
+        checkWidth()
+        window.addEventListener('resize', checkWidth)
+
+        return () => window.removeEventListener('resize', checkWidth)
+    }, [])
+
     return (
-        <Box bg="transparent" py={20}>
-            <Container maxW="container.xl">
-            
-                
-                <Box textAlign="center" mb={16}>
-                    <Text 
-                        fontSize="sm" 
-                        fontWeight="600" 
-                        color="purple.400" 
-                        textTransform="uppercase" 
+        <Box bg="transparent" py={isSmallScreen ? "2vh" : "1vh"}>
+            <Container maxW={isSmallScreen ? "90%" : "container.xl"}>
+
+                <Box textAlign="center" mb={isSmallScreen ? "6vh" : "8vh"}>
+                    <Text
+                        fontSize={isSmallScreen ? "2.5vw" : "0.8vw"}
+                        fontWeight="600"
+                        color="purple.400"
+                        textTransform="uppercase"
                         letterSpacing="wider"
-                        mb={3}
+                        mb="1.5vh"
                     >
                         Kontakt
                     </Text>
-                    <Heading 
-                        fontSize={{ base: "3xl", md: "5xl" }}
-                        color="white"
-                        mb={4}
+                    <Heading
+                        fontSize={isSmallScreen ? "7vw" : "5xl"}
+                        color="black"
+                        mb="2vh"
                     >
                         Bereit für saubere Räume?
                     </Heading>
-                    <Text fontSize="xl" color="whiteAlpha.700">
+                    <Text fontSize={isSmallScreen ? "3.5vw" : "xl"} color="blackAlpha.700">
                         Kontaktieren Sie uns für ein unverbindliches Angebot
                     </Text>
                 </Box>
 
-                <SimpleGrid columns={{ base: 1, md: 2 }} gap={12}>
-                    
+                <SimpleGrid columns={isSmallScreen ? 1 : 2} gap={isSmallScreen ? "6vh" : "6%"}>
+
                     {/* Links: Kontaktinfo */}
                     <Box
                         bg="whiteAlpha.50"
                         backdropFilter="blur(10px)"
                         border="1px solid"
-                        borderColor="whiteAlpha.200"
+                        borderColor="blackAlpha.200"
                         borderRadius="2xl"
-                        p={8}
+                        p={isSmallScreen ? "6%" : "4%"}
                     >
-                        <Heading 
-                            fontSize="2xl"
-                            color="white"
-                            mb={8}
+                        <Heading
+                            fontSize={isSmallScreen ? "6vw" : "2xl"}
+                            color="black"
+                            mb="4vh"
                         >
                             Schreiben Sie uns
                         </Heading>
-                        
-                        <Box color="whiteAlpha.800" fontSize="lg" mb={8} lineHeight="tall">
-                            <Box mb={6} display="flex" alignItems="start" gap={4}>
-                                <Text fontSize="2xl">📍</Text>
+
+                        <Box color="blackAlpha.800" fontSize={isSmallScreen ? "4vw" : "1.1vw"} mb="4vh" lineHeight="tall">
+                            <Box mb="3vh" display="flex" alignItems="start" gap="4%">
+                                <Text fontSize={isSmallScreen ? "6vw" : "2xl"}>📍</Text>
                                 <Box>
-                                    <Text fontWeight="600" color="white" mb={1}>Adresse</Text>
+                                    <Text fontWeight="600" color="black" mb="0.5vh">Adresse</Text>
                                     <Text>
                                         Musterstraße 123<br />
                                         32545 Bad Oeynhausen
@@ -62,13 +75,13 @@ export default function Contact() {
                                 </Box>
                             </Box>
 
-                            <Box mb={6} display="flex" alignItems="start" gap={4}>
-                                <Text fontSize="2xl">📞</Text>
+                            <Box mb="3vh" display="flex" alignItems="start" gap="4%">
+                                <Text fontSize={isSmallScreen ? "6vw" : "2xl"}>📞</Text>
                                 <Box>
-                                    <Text fontWeight="600" color="white" mb={1}>Telefon</Text>
-                                    <Box 
-                                        as="a" 
-                                        href="tel:+4952319876543" 
+                                    <Text fontWeight="600" color="black" mb="0.5vh">Telefon</Text>
+                                    <Box
+                                        as="a"
+                                        href="tel:+4952319876543"
                                         _hover={{ color: "purple.400" }}
                                         transition="color 0.2s"
                                     >
@@ -77,13 +90,13 @@ export default function Contact() {
                                 </Box>
                             </Box>
 
-                            <Box mb={6} display="flex" alignItems="start" gap={4}>
-                                <Text fontSize="2xl">✉️</Text>
+                            <Box mb="3vh" display="flex" alignItems="start" gap="4%">
+                                <Text fontSize={isSmallScreen ? "6vw" : "2xl"}>✉️</Text>
                                 <Box>
-                                    <Text fontWeight="600" color="white" mb={1}>E-Mail</Text>
-                                    <Box 
-                                        as="a" 
-                                        href="mailto:info@cleanitup.de" 
+                                    <Text fontWeight="600" color="black" mb="0.5vh">E-Mail</Text>
+                                    <Box
+                                        as="a"
+                                        href="mailto:info@cleanitup.de"
                                         _hover={{ color: "purple.400" }}
                                         transition="color 0.2s"
                                     >
@@ -92,10 +105,10 @@ export default function Contact() {
                                 </Box>
                             </Box>
 
-                            <Box mb={6} display="flex" alignItems="start" gap={4}>
-                                <Text fontSize="2xl">🕐</Text>
+                            <Box mb="3vh" display="flex" alignItems="start" gap="4%">
+                                <Text fontSize={isSmallScreen ? "6vw" : "2xl"}>🕐</Text>
                                 <Box>
-                                    <Text fontWeight="600" color="white" mb={1}>Zu diesen Zeiten sind wir erreichbar </Text>
+                                    <Text fontWeight="600" color="black" mb="0.5vh">Zu diesen Zeiten sind wir erreichbar</Text>
                                     <Text>
                                         Mo - Fr: 8:00 - 18:00 Uhr<br />
                                         Sa: 9:00 - 14:00 Uhr
@@ -105,16 +118,30 @@ export default function Contact() {
                         </Box>
 
                         <Button
-                            as="a"
-                            href="https://wa.me/4952319876543"
-                            target="_blank"
-                            size="lg"
-                            w="full"
-                            bg="purple.500"
-                            color="white"
-                            _hover={{ bg: "purple.600" }}
+                            width="100%"
+                            bg="purple.300"
+                            color="black"
+                            border="1px solid"
+                            borderColor="blackAlpha.400"
+                            borderRadius="full"
+                            px={isSmallScreen ? "6%" : "6"}
+                            py={isSmallScreen ? "3vh" : "auto"}
+                            fontSize={isSmallScreen ? "4vw" : "14px"}
+                            fontWeight="normal"
+                            h={isSmallScreen ? "auto" : "auto"}
+                            minH={isSmallScreen ? "55px" : "50px"}
+                            transition="all 0.3s ease"
+                            _hover={{
+                                bg: "transparent",
+                                border: "1px solid",
+                                transform: "scale(1.01)",
+                                boxShadow: "0px 0px 44px 0px rgba(212, 174, 251, 0.5)"
+                            }}
+                            _active={{
+                                transform: "scale(0.95)"
+                            }}
                         >
-                            💬 WhatsApp Chat starten
+                            Jetzt per Whatsapp kontaktieren!
                         </Button>
                     </Box>
 
@@ -123,8 +150,8 @@ export default function Contact() {
                         borderRadius="2xl"
                         overflow="hidden"
                         border="2px solid"
-                        borderColor="whiteAlpha.200"
-                        h="600px"
+                        borderColor="blackAlpha.100"
+                        h={isSmallScreen ? "400px" : "600px"}
                         position="relative"
                     >
                         <iframe
@@ -136,21 +163,22 @@ export default function Contact() {
                             loading="lazy"
                             referrerPolicy="no-referrer-when-downgrade"
                         />
-                        
+
                         {/* Overlay-Badge */}
                         <Box
                             position="absolute"
-                            bottom={4}
+                            bottom="2%"
                             left="50%"
                             transform="translateX(-50%)"
                             bg="whiteAlpha.900"
                             backdropFilter="blur(10px)"
-                            px={6}
-                            py={3}
+                            px={isSmallScreen ? "4%" : "3%"}
+                            py="1.5vh"
                             borderRadius="full"
                             boxShadow="lg"
+                            maxW={isSmallScreen ? "90%" : "auto"}
                         >
-                            <Text fontWeight="600" color="gray.800">
+                            <Text fontWeight="600" color="gray.800" fontSize={isSmallScreen ? "3vw" : "md"} textAlign="center">
                                 📍 Wir sind in Bad Oeynhausen und Umgebung für Sie da!
                             </Text>
                         </Box>

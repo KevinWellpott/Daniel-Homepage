@@ -7,7 +7,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de">
-      <body>
+      <body style={{ margin: 0, padding: 0, backgroundColor: 'transparent' }} >
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -1,18 +1,33 @@
 'use client'
 
 import { Box, Container, Flex, Button } from '@chakra-ui/react'
+import Link from 'next/link'
+import { useState, useEffect } from 'react'
 
 export default function Header() {
+    const [isSmallScreen, setIsSmallScreen] = useState(false)
+
+    useEffect(() => {
+        const checkWidth = () => {
+            setIsSmallScreen(window.innerWidth < 550)
+        }
+        
+        checkWidth()
+        window.addEventListener('resize', checkWidth)
+        
+        return () => window.removeEventListener('resize', checkWidth)
+    }, [])
+
     return (
         <Box
-            bg= "transparent"
-            color="white"
-            h="80px"  // ← FIXE HÖHE! Das ist die Lösung!
+            bg="white"
+            color="black"
+            h="80px"
             position="sticky"
             top={0}
             zIndex={1000}
             borderBottom="1px solid"
-            borderColor="whiteAlpha.200"
+            borderColor="blackAlpha.400"
             display="flex"
             alignItems="center"
         >
@@ -20,38 +35,42 @@ export default function Header() {
                 <Flex justify="space-between" align="center">
 
                     <img
-                        src="/CleanItUp.png"
+                        src="/CleanItUp2.png"
                         alt="CleanItUp Logo"
                         style={{
-                            height: '60px',  // ← Größeres Logo
+                            height: isSmallScreen ? '6vh' : '8vh',
                             width: 'auto',
                             display: 'block',
-                            marginTop: "15px"
+                            marginTop: "15px",
+                            transition: 'height 0.3s ease'
                         }}
                     />
 
-                    <Button
-                        size="md"
-                        bg="transparent"
-                        color="white"
-                        border="1px solid"
-                        borderColor="whiteAlpha.300"
-                        borderRadius="full"
-                        px={6}
-                        fontWeight="normal"
-                        transition="all 0.3s ease"
-                        _hover={{
-                            bg: "transparent",
-                            border: "1px solid",
-                            transform: "scale(1.01)",
-                             boxShadow: "20px 20px 60px rgba(201, 12, 125, 0.3)",
-                        }}
-                        _active={{
-                            transform: "scale(0.95)"
-                        }}
-                    >
-                        Zur Anfrage - 1 Minute
-                    </Button>
+                    <Link href="/contact" style={{ textDecoration: 'none' }}>
+                        <Button
+                            bg="purple.300"
+                            color="black"
+                            border="1px solid"
+                            borderColor="blackAlpha.400"
+                            borderRadius="full"
+                            px={6}
+                            fontSize="14px"
+                            fontWeight="normal"
+                            transition="all 0.3s ease"
+                            whiteSpace="nowrap"
+                            _hover={{
+                                bg: "transparent",
+                                border: "1px solid",
+                                transform: "scale(1.01)",
+                                boxShadow: "0px 0px 44px 0px rgba(212, 174, 251, 0.5)"
+                            }}
+                            _active={{
+                                transform: "scale(0.95)"
+                            }}
+                        >
+                            {isSmallScreen ? 'Zur Anfrage' : 'Zur Anfrage - 1 Minute'}
+                        </Button>
+                    </Link>
 
                 </Flex>
             </Container>
