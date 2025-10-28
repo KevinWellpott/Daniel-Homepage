@@ -79,14 +79,18 @@ export default function Contact() {
                                 <Text fontSize={isSmallScreen ? "6vw" : "2xl"}>📞</Text>
                                 <Box>
                                     <Text fontWeight="600" color="black" mb="0.5vh">Telefon</Text>
-                                    <Box
-                                        as="a"
+                                    <a
                                         href="tel:+4952319876543"
-                                        _hover={{ color: "purple.400" }}
-                                        transition="color 0.2s"
+                                        style={{
+                                            color: 'inherit',
+                                            textDecoration: 'none',
+                                            transition: 'color 0.2s'
+                                        }}
+                                        onMouseEnter={(e) => e.currentTarget.style.color = '#9F7AEA'}
+                                        onMouseLeave={(e) => e.currentTarget.style.color = 'inherit'}
                                     >
                                         05231 / 987 65 43
-                                    </Box>
+                                    </a>
                                 </Box>
                             </Box>
 
@@ -94,14 +98,18 @@ export default function Contact() {
                                 <Text fontSize={isSmallScreen ? "6vw" : "2xl"}>✉️</Text>
                                 <Box>
                                     <Text fontWeight="600" color="black" mb="0.5vh">E-Mail</Text>
-                                    <Box
-                                        as="a"
+                                    <a
                                         href="mailto:info@cleanitup.de"
-                                        _hover={{ color: "purple.400" }}
-                                        transition="color 0.2s"
+                                        style={{
+                                            color: 'inherit',
+                                            textDecoration: 'none',
+                                            transition: 'color 0.2s'
+                                        }}
+                                        onMouseEnter={(e) => e.currentTarget.style.color = '#9F7AEA'}
+                                        onMouseLeave={(e) => e.currentTarget.style.color = 'inherit'}
                                     >
                                         info@cleanitup.de
-                                    </Box>
+                                    </a>
                                 </Box>
                             </Box>
 
