@@ -2,6 +2,7 @@
 
 import { Box, Container, Heading, Text, Button } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 
 export default function Testimonials() {
     const [isSmallScreen, setIsSmallScreen] = useState(false)
@@ -203,7 +204,7 @@ export default function Testimonials() {
                             {getVisibleCards().map((index, position) => {
                                 const testimonial = testimonials[index]
                                 const isCenter = position === 1
-                                
+
                                 return (
                                     <Box
                                         key={index}
@@ -458,29 +459,32 @@ export default function Testimonials() {
                         <Text color="blackAlpha.600" mb="2vh" fontSize={isSmallScreen ? "3.5vw" : "md"}>
                             Überzeugen Sie sich selbst von unserer Qualität
                         </Text>
-                        <Button
-                            bg="purple.300"
-                            color="black"
-                            border="1px solid"
-                            borderColor="blackAlpha.400"
-                            borderRadius="full"
-                            px="6%"
-                            fontSize={isSmallScreen ? "4vw" : "14px"}
-                            fontWeight="normal"
-                            w={isSmallScreen ? "100%" : "auto"}
-                            transition="all 0.3s ease"
-                            _hover={{
-                                bg: "transparent",
-                                border: "1px solid",
-                                transform: "scale(1.01)",
-                                boxShadow: "0px 0px 44px 0px rgba(212, 174, 251, 0.5)",
-                            }}
-                            _active={{
-                                transform: "scale(0.95)"
-                            }}
-                        >
-                            Zur Anfrage - 1 Minute
-                        </Button>
+
+                        <Link href="/contact" style={{ textDecoration: 'none' }}>
+                            <Button
+                                bg="purple.300"
+                                color="black"
+                                border="1px solid"
+                                borderColor="blackAlpha.400"
+                                borderRadius="full"
+                                px={6}
+                                fontSize="14px"
+                                fontWeight="normal"
+                                transition="all 0.3s ease"
+                                whiteSpace="nowrap"
+                                _hover={{
+                                    bg: "transparent",
+                                    border: "1px solid",
+                                    transform: "scale(1.01)",
+                                    boxShadow: "0px 0px 44px 0px rgba(212, 174, 251, 0.5)"
+                                }}
+                                _active={{
+                                    transform: "scale(0.95)"
+                                }}
+                            >
+                                {isSmallScreen ? 'Zur Anfrage' : 'Zur Anfrage - 1 Minute'}
+                            </Button>
+                        </Link>
                     </Box>
                 </Box>
 

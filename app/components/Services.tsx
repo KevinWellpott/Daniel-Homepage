@@ -139,7 +139,7 @@ export default function Services() {
                                 transition="all 0.3s ease"
                                 _hover={{
                                     transform: "scale(1.01)",
-                                    boxShadow: "20px 20px 60px rgba(201, 12, 125, 0.3)",
+                                    boxShadow: "0px 0px 44px 0px rgba(212, 174, 251, 0.5)",
                                     borderColor: "blue.300"
                                 }}
                             >

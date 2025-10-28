@@ -98,7 +98,7 @@ export default function TeamSection() {
                                 Samuel Kerber
                             </Heading>
                             <Text color="purple.300" fontWeight="600" mb="2vh">
-                                Co-Founder & Geschäftsführer
+                                Mitarbeiter des Monats
                             </Text>
                             <Text color="blackAlpha.700" fontSize="sm" lineHeight="tall">
                                 "Perfektion ist kein Zufall – sie ist das Ergebnis von Leidenschaft und Präzision."
@@ -141,7 +141,7 @@ export default function TeamSection() {
                                 Daniel Lengert
                             </Heading>
                             <Text color="teal.300" fontWeight="600" mb="2vh">
-                                Co-Founder & Geschäftsführer
+                                Geschäftsführer
                             </Text>
                             <Text color="blackAlpha.700" fontSize="sm" lineHeight="tall">
                                 "Sauberkeit schafft Vertrauen – und Vertrauen ist die Basis jeder guten Beziehung."

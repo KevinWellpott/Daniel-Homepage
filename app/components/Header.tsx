@@ -1,4 +1,4 @@
-'use client'
+ 'use client'
 
 import { Box, Container, Flex, Button } from '@chakra-ui/react'
 import Link from 'next/link'
@@ -34,20 +34,24 @@ export default function Header() {
             <Container maxW="container.xl">
                 <Flex justify="space-between" align="center">
 
-                    <img
-                        src="/CleanItUp2.png"
-                        alt="CleanItUp Logo"
-                        style={{
-                            height: isSmallScreen ? '6vh' : '8vh',
-                            width: 'auto',
-                            display: 'block',
-                            marginTop: "15px",
-                            transition: 'height 0.3s ease'
-                        }}
-                    />
+                    <Link href="/" style={{ textDecoration: 'none', cursor: 'pointer' }}>
+                        <img
+                            src="/CleanItUp2.png"
+                            alt="CleanItUp Logo"
+                            style={{
+                                height: isSmallScreen ? '6vh' : '8vh',
+                                width: 'auto',
+                                display: 'block',
+                                marginTop: "15px",
+                                transition: 'height 0.3s ease',
+                                cursor: 'pointer'
+                            }}
+                        />
+                    </Link>
 
                     <Link href="/contact" style={{ textDecoration: 'none' }}>
                         <Button
+                        cursor="pointer"
                             bg="purple.300"
                             color="black"
                             border="1px solid"
@@ -76,4 +80,4 @@ export default function Header() {
             </Container>
         </Box>
     )
-}
+} 
