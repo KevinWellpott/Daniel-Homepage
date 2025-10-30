@@ -1,35 +1,53 @@
 import { NextRequest, NextResponse } from 'next/server'
+// @ts-ignore
 import nodemailer from 'nodemailer'
 
 export async function POST(request: NextRequest) {
     try {
+        // Body parsen
         const body = await request.json()
+        console.log('Empfangene Daten:', body)
+
         const { name, email, telefon, leistung, nachricht } = body
 
         // Validierung
         if (!name || !email || !leistung || !nachricht) {
+            console.error('Fehlende Felder:', { name, email, leistung, nachricht })
             return NextResponse.json(
                 { error: 'Bitte fülle alle Pflichtfelder aus' },
                 { status: 400 }
             )
         }
 
-        // Email Transporter konfigurieren
+        // Email Config Check
+        if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+            console.error('EMAIL_USER oder EMAIL_PASSWORD fehlt in .env.local')
+            return NextResponse.json(
+                { error: 'Email-Konfiguration fehlt' },
+                { status: 500 }
+            )
+        }
+
+        console.log('Erstelle Email Transporter...')
+
+        // Email Transporter
         const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com', // Oder dein SMTP Server
+            host: 'smtp.gmail.com',
             port: 587,
             secure: false,
             auth: {
-                user: process.env.EMAIL_USER, // Deine Email
-                pass: process.env.EMAIL_PASSWORD, // Dein App-Passwort
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASSWORD,
             },
         })
+
+        console.log('Sende Email...')
 
         // Email Inhalt
         const mailOptions = {
             from: process.env.EMAIL_USER,
-            to: process.env.EMAIL_USER, // An dich selbst
-            replyTo: email, // Kunde kann direkt antworten
+            to: process.env.EMAIL_USER,
+            replyTo: email,
             subject: `🔔 Neue Anfrage von ${name}`,
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
@@ -65,18 +83,19 @@ export async function POST(request: NextRequest) {
             `,
         }
 
-        // Email senden
         await transporter.sendMail(mailOptions)
+
+        console.log('✅ Email erfolgreich gesendet!')
 
         return NextResponse.json(
             { message: 'Email erfolgreich gesendet!' },
             { status: 200 }
         )
 
-    } catch (error) {
-        console.error('Email Fehler:', error)
+    } catch (error: any) {
+        console.error('❌ Email Fehler:', error)
         return NextResponse.json(
-            { error: 'Fehler beim Senden der Email' },
+            { error: 'Fehler beim Senden der Email: ' + error.message },
             { status: 500 }
         )
     }

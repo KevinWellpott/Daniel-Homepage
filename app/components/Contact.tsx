@@ -14,6 +14,7 @@ import { useState, useEffect } from 'react'
 
 export default function ContactForm() {
     const [isSmallScreen, setIsSmallScreen] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         const checkWidth = () => {
@@ -25,6 +26,33 @@ export default function ContactForm() {
 
         return () => window.removeEventListener('resize', checkWidth)
     }, [])
+
+    const handleSubmit = async (e: any) => {
+        e.preventDefault()
+        setIsLoading(true)
+
+        const formData = new FormData(e.currentTarget)
+        const data = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            telefon: formData.get('telefon'),
+            leistung: formData.get('leistung'),
+            nachricht: formData.get('nachricht')
+        }
+
+        try {
+            const response = await fetch('/api/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     return (
         <Box
@@ -77,6 +105,8 @@ export default function ContactForm() {
 
                     {/* Premium Form Container */}
                     <Box
+                        as="form"
+                        onSubmit={handleSubmit}
                         p={isSmallScreen ? "7%" : "5%"}
                         borderRadius="24px"
                         border="1px solid"
@@ -110,6 +140,9 @@ export default function ContactForm() {
                                     Dein Name *
                                 </Box>
                                 <Input
+                                    name="name"
+                                    type="text"
+                                    required
                                     placeholder="z.B. Max Mustermann"
                                     fontSize={isSmallScreen ? "4vw" : "0.9vw"}
                                     borderRadius="14px"
@@ -142,7 +175,9 @@ export default function ContactForm() {
                                     E-Mail Adresse *
                                 </Box>
                                 <Input
+                                    name="email"
                                     type="email"
+                                    required
                                     placeholder="deine@email.de"
                                     fontSize={isSmallScreen ? "4vw" : "0.9vw"}
                                     borderRadius="14px"
@@ -175,6 +210,7 @@ export default function ContactForm() {
                                     Telefon <Box as="span" color="gray.500" fontWeight="400">(optional)</Box>
                                 </Box>
                                 <Input
+                                    name="telefon"
                                     type="tel"
                                     placeholder="+49 123 456789"
                                     fontSize={isSmallScreen ? "4vw" : "0.9vw"}
@@ -204,40 +240,30 @@ export default function ContactForm() {
                                     mb="1vh"
                                     fontWeight="600"
                                     color="gray.800"
-                                >
-                                    Welche Reinigung benötigst du? *
-                                </Box>
-                                <Box
-                                    as="select"
-                                    width="100%"
-                                    fontSize={isSmallScreen ? "4vw" : "0.9vw"}
-                                    borderRadius="14px"
-                                    border="2px solid"
-                                    borderColor="gray.200"
-                                    bg="gray.50"
-                                    h={isSmallScreen ? "50px" : "48px"}
-                                    padding="0 4%"
-                                    cursor="pointer"
-                                    _hover={{
-                                        borderColor: "purple.300",
-                                        bg: "white"
-                                    }}
-                                    _focus={{
-                                        borderColor: "purple.500",
-                                        boxShadow: "0 0 0 3px rgba(168, 85, 247, 0.1)",
-                                        outline: "none",
-                                        bg: "white"
-                                    }}
-                                    transition="all 0.2s"
-                                >
-                                    <option value="">Bitte auswählen...</option>
-                                    <option value="grundreinigung">🏠 Grundreinigung</option>
-                                    <option value="unterhaltsreinigung">🧹 Unterhaltsreinigung</option>
-                                    <option value="treppenhausreinigung">🧼 Treppenhausreinigung</option>
-                                    <option value="büroreinigung">💼 Büroreinigung</option>
-                                    <option value="sonderreinigung">✨ Sonderreinigung</option>
-                                </Box>
+                                />
+                                Welche Reinigung benötigst du? *
                             </Box>
+                            <select
+                                name="leistung"
+                                required
+                                style={{
+                                    width: '100%',
+                                    fontSize: isSmallScreen ? '4vw' : '0.9vw',
+                                    borderRadius: '14px',
+                                    border: '2px solid #E5E7EB',
+                                    backgroundColor: '#F9FAFB',
+                                    height: isSmallScreen ? '50px' : '48px',
+                                    padding: '0 4%',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                <option value="">Bitte auswählen...</option>
+                                <option value="Grundreinigung">🏠 Grundreinigung</option>
+                                <option value="Unterhaltsreinigung">🧹 Unterhaltsreinigung</option>
+                                <option value="Fensterreinigung">🪟 Fensterreinigung</option>
+                                <option value="Büroreinigung">💼 Büroreinigung</option>
+                                <option value="Sonderreinigung">✨ Sonderreinigung</option>
+                            </select>
 
                             <Box width="100%">
                                 <Box
@@ -251,6 +277,8 @@ export default function ContactForm() {
                                     Deine Nachricht *
                                 </Box>
                                 <Textarea
+                                    name="nachricht"
+                                    required
                                     placeholder="Beschreibe uns kurz dein Anliegen (z.B. Größe, Termine, Besonderheiten...)"
                                     rows={isSmallScreen ? 4 : 3}
                                     fontSize={isSmallScreen ? "4vw" : "0.9vw"}
@@ -274,35 +302,38 @@ export default function ContactForm() {
                             </Box>
 
                             {/* Premium CTA Button */}
-                             <Button
-                            width="100%"
-                            bg="purple.300"
-                            color="black"
-                            border="1px solid"
-                            borderColor="blackAlpha.400"
-                            borderRadius="full"
-                            px={6}
-                            fontSize="14px"
-                            fontWeight="normal"
-                            transition="all 0.3s ease"
-                            whiteSpace="nowrap"
-                            _hover={{
-                                bg: "transparent",
-                                border: "1px solid",
-                                transform: "scale(1.01)",
-                                boxShadow: "0px 0px 44px 0px rgba(212, 174, 251, 0.5)"
-                            }}
-                            _active={{
-                                transform: "scale(0.95)"
-                            }}
-                        >
-                            Ja, ich will einen Termin!
-                        </Button>
+                            <Button
+                                type="submit"
+                                disabled={isLoading}
+                                width="100%"
+                                bg="linear-gradient(135deg, rgba(168, 85, 247, 1) 0%, rgba(147, 51, 234, 1) 100%)"
+                                color="white"
+                                border="none"
+                                borderRadius="full"
+                                px="6%"
+                                py={isSmallScreen ? "3.5vh" : "3vh"}
+                                fontSize={isSmallScreen ? "4.5vw" : "1.1vw"}
+                                fontWeight="700"
+                                h="auto"
+                                mt="2vh"
+                                boxShadow="0 10px 30px rgba(168, 85, 247, 0.3)"
+                                transition="all 0.3s ease"
+                                _hover={{
+                                    transform: "translateY(-2px)",
+                                    boxShadow: "0 15px 40px rgba(168, 85, 247, 0.4)",
+                                }}
+                                _active={{
+                                    transform: "translateY(0)"
+                                }}
+                                opacity={isLoading ? 0.6 : 1}
+                            >
+                                {isLoading ? '⏳ Wird gesendet...' : '🚀 Jetzt kostenlos Angebot erhalten'}
+                            </Button>
 
                             {/* Trust Indicators */}
-                            <Box 
-                                display="flex" 
-                                justifyContent="center" 
+                            <Box
+                                display="flex"
+                                justifyContent="center"
                                 gap={isSmallScreen ? "4%" : "3%"}
                                 flexWrap="wrap"
                                 pt="2vh"
