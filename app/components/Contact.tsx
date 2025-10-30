@@ -35,10 +35,12 @@ export default function ContactForm() {
         const data = {
             name: formData.get('name'),
             email: formData.get('email'),
-            telefon: formData.get('telefon'),
+            telefon: formData.get('telefon') || '',
             leistung: formData.get('leistung'),
             nachricht: formData.get('nachricht')
         }
+
+        console.log('📤 Sende Daten:', data)
 
         try {
             const response = await fetch('/api/send-email', {
@@ -49,6 +51,18 @@ export default function ContactForm() {
                 body: JSON.stringify(data)
             })
 
+            console.log('📥 Response Status:', response.status)
+
+            const responseData = await response.json()
+            console.log('📥 Response Data:', responseData)
+
+            if (response.ok) {
+                e.currentTarget.reset()
+            } else {
+                console.error('Server Error:', responseData)
+            }
+        } catch (error) {
+            console.error('❌ Catch Error:', error)
         } finally {
             setIsLoading(false)
         }
@@ -67,7 +81,6 @@ export default function ContactForm() {
 
                 <VStack gap={isSmallScreen ? "4vh" : "3vh"} align="stretch">
 
-                    {/* Header mit Social Proof */}
                     <Box textAlign="center">
                         <Box
                             display="inline-block"
@@ -103,7 +116,6 @@ export default function ContactForm() {
                         </Text>
                     </Box>
 
-                    {/* Premium Form Container */}
                     <Box
                         as="form"
                         onSubmit={handleSubmit}
@@ -240,30 +252,51 @@ export default function ContactForm() {
                                     mb="1vh"
                                     fontWeight="600"
                                     color="gray.800"
-                                />
-                                Welche Reinigung benötigst du? *
+                                >
+                                    Welche Reinigung benötigst du? *
+                                </Box>
+                                <select
+                                    name="leistung"
+                                    required
+                                    style={{
+                                        width: '100%',
+                                        fontSize: isSmallScreen ? '16px' : '14px',
+                                        borderRadius: '14px',
+                                        border: '2px solid #E5E7EB',
+                                        backgroundColor: '#F9FAFB',
+                                        height: isSmallScreen ? '50px' : '48px',
+                                        padding: '0 4%',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.borderColor = '#D8B4FE'
+                                        e.currentTarget.style.backgroundColor = 'white'
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.borderColor = '#E5E7EB'
+                                        e.currentTarget.style.backgroundColor = '#F9FAFB'
+                                    }}
+                                    onFocus={(e) => {
+                                        e.currentTarget.style.borderColor = '#A855F7'
+                                        e.currentTarget.style.boxShadow = '0 0 0 3px rgba(168, 85, 247, 0.1)'
+                                        e.currentTarget.style.backgroundColor = 'white'
+                                        e.currentTarget.style.outline = 'none'
+                                    }}
+                                    onBlur={(e) => {
+                                        e.currentTarget.style.borderColor = '#E5E7EB'
+                                        e.currentTarget.style.boxShadow = 'none'
+                                        e.currentTarget.style.backgroundColor = '#F9FAFB'
+                                    }}
+                                >
+                                    <option value="">Bitte auswählen...</option>
+                                    <option value="Grundreinigung">🏠 Grundreinigung</option>
+                                    <option value="Unterhaltsreinigung">🧹 Unterhaltsreinigung</option>
+                                    <option value="Fensterreinigung">🪟 Fensterreinigung</option>
+                                    <option value="Büroreinigung">💼 Büroreinigung</option>
+                                    <option value="Sonderreinigung">✨ Sonderreinigung</option>
+                                </select>
                             </Box>
-                            <select
-                                name="leistung"
-                                required
-                                style={{
-                                    width: '100%',
-                                    fontSize: isSmallScreen ? '4vw' : '0.9vw',
-                                    borderRadius: '14px',
-                                    border: '2px solid #E5E7EB',
-                                    backgroundColor: '#F9FAFB',
-                                    height: isSmallScreen ? '50px' : '48px',
-                                    padding: '0 4%',
-                                    cursor: 'pointer'
-                                }}
-                            >
-                                <option value="">Bitte auswählen...</option>
-                                <option value="Grundreinigung">🏠 Grundreinigung</option>
-                                <option value="Unterhaltsreinigung">🧹 Unterhaltsreinigung</option>
-                                <option value="Fensterreinigung">🪟 Fensterreinigung</option>
-                                <option value="Büroreinigung">💼 Büroreinigung</option>
-                                <option value="Sonderreinigung">✨ Sonderreinigung</option>
-                            </select>
 
                             <Box width="100%">
                                 <Box
@@ -301,36 +334,34 @@ export default function ContactForm() {
                                 />
                             </Box>
 
-                            {/* Premium CTA Button */}
                             <Button
                                 type="submit"
                                 disabled={isLoading}
                                 width="100%"
-                                bg="linear-gradient(135deg, rgba(168, 85, 247, 1) 0%, rgba(147, 51, 234, 1) 100%)"
-                                color="white"
-                                border="none"
+                                cursor="pointer"
+                                bg="purple.300"
+                                color="black"
+                                border="1px solid"
+                                borderColor="blackAlpha.400"
                                 borderRadius="full"
-                                px="6%"
-                                py={isSmallScreen ? "3.5vh" : "3vh"}
-                                fontSize={isSmallScreen ? "4.5vw" : "1.1vw"}
-                                fontWeight="700"
-                                h="auto"
-                                mt="2vh"
-                                boxShadow="0 10px 30px rgba(168, 85, 247, 0.3)"
+                                px={6}
+                                fontSize="14px"
+                                fontWeight="normal"
                                 transition="all 0.3s ease"
+                                whiteSpace="nowrap"
                                 _hover={{
-                                    transform: "translateY(-2px)",
-                                    boxShadow: "0 15px 40px rgba(168, 85, 247, 0.4)",
+                                    bg: "transparent",
+                                    border: "1px solid",
+                                    transform: "scale(1.01)",
+                                    boxShadow: "0px 0px 44px 0px rgba(212, 174, 251, 0.5)"
                                 }}
                                 _active={{
-                                    transform: "translateY(0)"
+                                    transform: "scale(0.95)"
                                 }}
-                                opacity={isLoading ? 0.6 : 1}
                             >
                                 {isLoading ? '⏳ Wird gesendet...' : '🚀 Jetzt kostenlos Angebot erhalten'}
                             </Button>
 
-                            {/* Trust Indicators */}
                             <Box
                                 display="flex"
                                 justifyContent="center"
@@ -338,13 +369,13 @@ export default function ContactForm() {
                                 flexWrap="wrap"
                                 pt="2vh"
                             >
-                                <Text fontSize={isSmallScreen ? "2.5vw" : "0.7vw"} color="gray.600" display="flex" alignItems="center" gap="1%">
+                                <Text fontSize={isSmallScreen ? "2.5vw" : "0.7vw"} color="gray.600">
                                     ⚡ Schnelle Antwort
                                 </Text>
-                                <Text fontSize={isSmallScreen ? "2.5vw" : "0.7vw"} color="gray.600" display="flex" alignItems="center" gap="1%">
+                                <Text fontSize={isSmallScreen ? "2.5vw" : "0.7vw"} color="gray.600">
                                     ✓ 100% Kostenlos
                                 </Text>
-                                <Text fontSize={isSmallScreen ? "2.5vw" : "0.7vw"} color="gray.600" display="flex" alignItems="center" gap="1%">
+                                <Text fontSize={isSmallScreen ? "2.5vw" : "0.7vw"} color="gray.600">
                                     🔒 SSL-Verschlüsselt
                                 </Text>
                             </Box>
@@ -352,7 +383,6 @@ export default function ContactForm() {
                         </VStack>
                     </Box>
 
-                    {/* Bottom Trust Badge */}
                     <Box
                         textAlign="center"
                         fontSize={isSmallScreen ? "2.8vw" : "0.8vw"}

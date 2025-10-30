@@ -69,8 +69,8 @@ export default function Contact() {
                                 <Box>
                                     <Text fontWeight="600" color="black" mb="0.5vh">Adresse</Text>
                                     <Text>
-                                        Musterstraße 123<br />
-                                        32545 Bad Oeynhausen
+                                        Wilhelmstraße. 8<br />
+                                        32602 Vlotho
                                     </Text>
                                 </Box>
                             </Box>
@@ -126,18 +126,16 @@ export default function Contact() {
                         </Box>
 
                         <Button
+                            onClick={() => window.open('https://wa.me/491794884497')}
                             width="100%"
                             bg="purple.300"
                             color="black"
                             border="1px solid"
-                            borderColor="blackAlpha.400"
+                            borderColor="blackAlpha.100"
                             borderRadius="full"
-                            px={isSmallScreen ? "6%" : "6"}
-                            py={isSmallScreen ? "3vh" : "auto"}
-                            fontSize={isSmallScreen ? "4vw" : "14px"}
+                            px="6%"
+                            fontSize="14px"
                             fontWeight="normal"
-                            h={isSmallScreen ? "auto" : "auto"}
-                            minH={isSmallScreen ? "55px" : "50px"}
                             transition="all 0.3s ease"
                             _hover={{
                                 bg: "transparent",
@@ -149,7 +147,7 @@ export default function Contact() {
                                 transform: "scale(0.95)"
                             }}
                         >
-                            Jetzt per Whatsapp kontaktieren!
+                            📱 Jetzt per WhatsApp kontaktieren!
                         </Button>
                     </Box>
 
@@ -195,6 +193,6 @@ export default function Contact() {
                 </SimpleGrid>
 
             </Container>
-        </Box>
+        </Box >
     )
 }

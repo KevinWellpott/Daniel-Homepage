@@ -6,6 +6,7 @@ import Testimonials from './components/Testimonials'
 import Maps from './components/Maps'
 import BubbleBackground from './components/BubbleBackground'
 import Team from './components/Team'
+import Footer from './components/Footer'
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <Services />
       <Testimonials />
       <Maps />
+      <Footer />
     </>
   )
 }
