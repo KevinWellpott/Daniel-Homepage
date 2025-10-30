@@ -7,13 +7,13 @@ import {
     Input,
     Textarea,
     Button,
-    VStack
+    VStack,
+    Text
 } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 
 export default function ContactForm() {
     const [isSmallScreen, setIsSmallScreen] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         const checkWidth = () => {
@@ -26,115 +26,107 @@ export default function ContactForm() {
         return () => window.removeEventListener('resize', checkWidth)
     }, [])
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault()
-        setIsLoading(true)
-
-        const formData = new FormData(e.currentTarget)
-        const data = {
-            name: formData.get('name'),
-            email: formData.get('email'),
-            telefon: formData.get('telefon'),
-            leistung: formData.get('leistung'),
-            nachricht: formData.get('nachricht')
-        }
-
-        try {
-            const response = await fetch('/api/send-email', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-
-            if (response.ok) {
-                alert('✅ Erfolgreich gesendet! Wir melden uns innerhalb von 24h bei dir!')
-                e.currentTarget.reset()
-            } else {
-                alert('❌ Fehler beim Senden. Bitte versuche es später erneut.')
-            }
-        } catch (error) {
-            alert('❌ Fehler beim Senden. Bitte versuche es später erneut.')
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
     return (
         <Box
-            minH="90vh"
-            py="3vh"
-            px="8%"
-            bg="linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(240,240,255,0.95))"
+            minH={isSmallScreen ? "auto" : "90vh"}
+            py={isSmallScreen ? "8vh" : "5vh"}
+            px={isSmallScreen ? "5%" : "8%"}
+            bg="linear-gradient(135deg, rgba(168, 85, 247, 0.03) 0%, rgba(255,255,255,0.95) 50%, rgba(20, 184, 166, 0.03) 100%)"
             display="flex"
             alignItems="center"
         >
-            <Container maxW="90%">
+            <Container maxW={isSmallScreen ? "95%" : "650px"}>
 
-                <VStack gap="2vh" align="stretch">
+                <VStack gap={isSmallScreen ? "4vh" : "3vh"} align="stretch">
 
-                    <Box
-                        paddingTop="%"
-                        textAlign="center">
-                        <Heading
-                            fontSize="2.5vw"
-                            fontWeight="600"
-                            mb="1vh"
-                            color="black"
-                        >
-                            Anfrage in 1 Minute
-                        </Heading>
+                    {/* Header mit Social Proof */}
+                    <Box textAlign="center">
                         <Box
-                            fontSize="1vw"
+                            display="inline-block"
+                            bg="purple.50"
+                            color="purple.600"
+                            fontSize={isSmallScreen ? "2.5vw" : "0.75vw"}
+                            fontWeight="600"
+                            px={isSmallScreen ? "4%" : "3%"}
+                            py="1vh"
+                            borderRadius="full"
+                            mb="2vh"
+                            textTransform="uppercase"
+                            letterSpacing="wider"
+                        >
+                            ⚡ Über 200+ zufriedene Kunden
+                        </Box>
+
+                        <Heading
+                            fontSize={isSmallScreen ? "7vw" : "2.8vw"}
+                            fontWeight="700"
+                            mb="1.5vh"
+                            color="black"
+                            lineHeight="1.2"
+                        >
+                            Anfrage in unter 60 Sekunden
+                        </Heading>
+                        <Text
+                            fontSize={isSmallScreen ? "3.5vw" : "1.1vw"}
                             color="blackAlpha.700"
                             fontWeight="400"
                         >
-                            Wir melden uns innerhalb von 24 Stunden bei dir zurück
-                        </Box>
+                            ✓ Antwort innerhalb 24h · ✓ Unverbindlich · ✓ Kostenlos
+                        </Text>
                     </Box>
 
+                    {/* Premium Form Container */}
                     <Box
-                        as="form"
-                        onSubmit={handleSubmit}
-                        p="4%"
-                        borderRadius="20px"
+                        p={isSmallScreen ? "7%" : "5%"}
+                        borderRadius="24px"
                         border="1px solid"
                         borderColor="blackAlpha.100"
                         bg="white"
-                        boxShadow="0 10px 40px rgba(0, 0, 0, 0.08)"
+                        boxShadow="0 20px 60px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0,0,0,0.05)"
+                        position="relative"
+                        _before={{
+                            content: '""',
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            height: "4px",
+                            bg: "linear-gradient(90deg, rgba(168, 85, 247, 1) 0%, rgba(20, 184, 166, 1) 100%)",
+                            borderTopLeftRadius: "24px",
+                            borderTopRightRadius: "24px"
+                        }}
                     >
-                        <VStack gap="2.5vh">
+                        <VStack gap={isSmallScreen ? "4vh" : "3vh"}>
 
                             <Box width="100%">
                                 <Box
                                     as="label"
                                     display="block"
-                                    fontSize="0.9vw"
+                                    fontSize={isSmallScreen ? "3.5vw" : "0.95vw"}
                                     mb="1vh"
-                                    fontWeight="500"
-                                    color="black"
+                                    fontWeight="600"
+                                    color="gray.800"
                                 >
-                                    Name
+                                    Dein Name *
                                 </Box>
                                 <Input
-                                    name="name"
-                                    type="text"
-                                    required
-                                    placeholder="Dein vollständiger Name"
-                                    fontSize="0.85vw"
-                                    borderRadius="12px"
+                                    placeholder="z.B. Max Mustermann"
+                                    fontSize={isSmallScreen ? "4vw" : "0.9vw"}
+                                    borderRadius="14px"
                                     border="2px solid"
-                                    borderColor="blackAlpha.200"
-                                    bg="white"
-                                    h="40px"
+                                    borderColor="gray.200"
+                                    bg="gray.50"
+                                    h={isSmallScreen ? "50px" : "48px"}
                                     _hover={{
-                                        borderColor: "blackAlpha.300"
+                                        borderColor: "purple.300",
+                                        bg: "white"
                                     }}
                                     _focus={{
-                                        borderColor: "rgba(201, 12, 125, 0.6)",
-                                        boxShadow: "0 0 0 2px rgba(201, 12, 125, 0.1)"
+                                        borderColor: "purple.500",
+                                        boxShadow: "0 0 0 3px rgba(168, 85, 247, 0.1)",
+                                        bg: "white"
                                     }}
+                                    transition="all 0.2s"
                                 />
                             </Box>
 
@@ -142,31 +134,32 @@ export default function ContactForm() {
                                 <Box
                                     as="label"
                                     display="block"
-                                    fontSize="0.9vw"
+                                    fontSize={isSmallScreen ? "3.5vw" : "0.95vw"}
                                     mb="1vh"
-                                    fontWeight="500"
-                                    color="black"
+                                    fontWeight="600"
+                                    color="gray.800"
                                 >
-                                    E-Mail
+                                    E-Mail Adresse *
                                 </Box>
                                 <Input
-                                    name="email"
                                     type="email"
-                                    required
                                     placeholder="deine@email.de"
-                                    fontSize="0.85vw"
-                                    borderRadius="12px"
+                                    fontSize={isSmallScreen ? "4vw" : "0.9vw"}
+                                    borderRadius="14px"
                                     border="2px solid"
-                                    borderColor="blackAlpha.200"
-                                    bg="white"
-                                    h="40px"
+                                    borderColor="gray.200"
+                                    bg="gray.50"
+                                    h={isSmallScreen ? "50px" : "48px"}
                                     _hover={{
-                                        borderColor: "blackAlpha.300"
+                                        borderColor: "purple.300",
+                                        bg: "white"
                                     }}
                                     _focus={{
-                                        borderColor: "rgba(201, 12, 125, 0.6)",
-                                        boxShadow: "0 0 0 2px rgba(201, 12, 125, 0.1)"
+                                        borderColor: "purple.500",
+                                        boxShadow: "0 0 0 3px rgba(168, 85, 247, 0.1)",
+                                        bg: "white"
                                     }}
+                                    transition="all 0.2s"
                                 />
                             </Box>
 
@@ -174,30 +167,32 @@ export default function ContactForm() {
                                 <Box
                                     as="label"
                                     display="block"
-                                    fontSize="0.9vw"
+                                    fontSize={isSmallScreen ? "3.5vw" : "0.95vw"}
                                     mb="1vh"
-                                    fontWeight="500"
-                                    color="black"
+                                    fontWeight="600"
+                                    color="gray.800"
                                 >
-                                    Telefon <Box as="span" color="blackAlpha.500">(optional)</Box>
+                                    Telefon <Box as="span" color="gray.500" fontWeight="400">(optional)</Box>
                                 </Box>
                                 <Input
-                                    name="telefon"
                                     type="tel"
                                     placeholder="+49 123 456789"
-                                    fontSize="0.85vw"
-                                    borderRadius="12px"
+                                    fontSize={isSmallScreen ? "4vw" : "0.9vw"}
+                                    borderRadius="14px"
                                     border="2px solid"
-                                    borderColor="blackAlpha.200"
-                                    bg="white"
-                                    h="40px"
+                                    borderColor="gray.200"
+                                    bg="gray.50"
+                                    h={isSmallScreen ? "50px" : "48px"}
                                     _hover={{
-                                        borderColor: "blackAlpha.300"
+                                        borderColor: "purple.300",
+                                        bg: "white"
                                     }}
                                     _focus={{
-                                        borderColor: "rgba(201, 12, 125, 0.6)",
-                                        boxShadow: "0 0 0 2px rgba(201, 12, 125, 0.1)"
+                                        borderColor: "purple.500",
+                                        boxShadow: "0 0 0 3px rgba(168, 85, 247, 0.1)",
+                                        bg: "white"
                                     }}
+                                    transition="all 0.2s"
                                 />
                             </Box>
 
@@ -205,41 +200,42 @@ export default function ContactForm() {
                                 <Box
                                     as="label"
                                     display="block"
-                                    fontSize="0.9vw"
+                                    fontSize={isSmallScreen ? "3.5vw" : "0.95vw"}
                                     mb="1vh"
-                                    fontWeight="500"
-                                    color="black"
+                                    fontWeight="600"
+                                    color="gray.800"
                                 >
-                                    Welche Leistung?
+                                    Welche Reinigung benötigst du? *
                                 </Box>
                                 <Box
                                     as="select"
-                                    
-                                  
                                     width="100%"
-                                    fontSize="0.85vw"
-                                    borderRadius="12px"
+                                    fontSize={isSmallScreen ? "4vw" : "0.9vw"}
+                                    borderRadius="14px"
                                     border="2px solid"
-                                    borderColor="blackAlpha.200"
-                                    bg="white"
-                                    h="40px"
-                                    padding="0 3%"
+                                    borderColor="gray.200"
+                                    bg="gray.50"
+                                    h={isSmallScreen ? "50px" : "48px"}
+                                    padding="0 4%"
                                     cursor="pointer"
                                     _hover={{
-                                        borderColor: "blackAlpha.300"
+                                        borderColor: "purple.300",
+                                        bg: "white"
                                     }}
                                     _focus={{
-                                        borderColor: "rgba(201, 12, 125, 0.6)",
-                                        boxShadow: "0 0 0 2px rgba(201, 12, 125, 0.1)",
-                                        outline: "none"
+                                        borderColor: "purple.500",
+                                        boxShadow: "0 0 0 3px rgba(168, 85, 247, 0.1)",
+                                        outline: "none",
+                                        bg: "white"
                                     }}
+                                    transition="all 0.2s"
                                 >
-                                    <option value="">Bitte auswählen</option>
-                                    <option value="grundreinigung">Grundreinigung</option>
-                                    <option value="unterhaltsreinigung">Unterhaltsreinigung</option>
-                                    <option value="fensterreinigung">Fensterreinigung</option>
-                                    <option value="büroreinigung">Büroreinigung</option>
-                                    <option value="sonderreinigung">Sonderreinigung</option>
+                                    <option value="">Bitte auswählen...</option>
+                                    <option value="grundreinigung">🏠 Grundreinigung</option>
+                                    <option value="unterhaltsreinigung">🧹 Unterhaltsreinigung</option>
+                                    <option value="treppenhausreinigung">🧼 Treppenhausreinigung</option>
+                                    <option value="büroreinigung">💼 Büroreinigung</option>
+                                    <option value="sonderreinigung">✨ Sonderreinigung</option>
                                 </Box>
                             </Box>
 
@@ -247,73 +243,96 @@ export default function ContactForm() {
                                 <Box
                                     as="label"
                                     display="block"
-                                    fontSize="0.9vw"
+                                    fontSize={isSmallScreen ? "3.5vw" : "0.95vw"}
                                     mb="1vh"
-                                    fontWeight="500"
-                                    color="black"
+                                    fontWeight="600"
+                                    color="gray.800"
                                 >
-                                    Deine Nachricht
+                                    Deine Nachricht *
                                 </Box>
                                 <Textarea
-                                    name="nachricht"
-                                    required
-                                    placeholder="Beschreibe uns kurz, was gereinigt werden soll..."
-                                    rows={3}
-                                    fontSize="0.85vw"
-                                    borderRadius="12px"
+                                    placeholder="Beschreibe uns kurz dein Anliegen (z.B. Größe, Termine, Besonderheiten...)"
+                                    rows={isSmallScreen ? 4 : 3}
+                                    fontSize={isSmallScreen ? "4vw" : "0.9vw"}
+                                    borderRadius="14px"
                                     border="2px solid"
-                                    borderColor="blackAlpha.200"
-                                    bg="white"
-                                    resize="none"
-                                    minH="80px"
+                                    borderColor="gray.200"
+                                    bg="gray.50"
+                                    resize="vertical"
+                                    minH={isSmallScreen ? "100px" : "90px"}
                                     _hover={{
-                                        borderColor: "blackAlpha.300"
+                                        borderColor: "purple.300",
+                                        bg: "white"
                                     }}
                                     _focus={{
-                                        borderColor: "rgba(201, 12, 125, 0.6)",
-                                        boxShadow: "0 0 0 2px rgba(201, 12, 125, 0.1)"
+                                        borderColor: "purple.500",
+                                        boxShadow: "0 0 0 3px rgba(168, 85, 247, 0.1)",
+                                        bg: "white"
                                     }}
+                                    transition="all 0.2s"
                                 />
                             </Box>
 
-                            <Button
-                                type="submit"
-                                disabled={isLoading}
-                                width="100%"
-                                bg="transparent"
-                                color="black"
-                                border="1px solid"
-                                borderColor="blackAlpha.400"
-                                borderRadius="full"
-                                px={{ base: 3, sm: 4, md: 5, lg: 6 }}
-                                fontSize={{ base: "10px", sm: "11px", md: "13px", lg: "14px", xl: "15px" }}
-                                fontWeight="normal"
-                                transition="all 0.3s ease"
-                                whiteSpace="nowrap"
-                                _hover={{
-                                    bg: "transparent",
-                                    border: "1px solid",
-                                    transform: "scale(1.01)",
-                                    boxShadow: "20px 20px 60px rgba(201, 12, 125, 0.3)",
-                                }}
-                                _active={{
-                                    transform: "scale(0.95)"
-                                }}
+                            {/* Premium CTA Button */}
+                             <Button
+                            width="100%"
+                            bg="purple.300"
+                            color="black"
+                            border="1px solid"
+                            borderColor="blackAlpha.400"
+                            borderRadius="full"
+                            px={6}
+                            fontSize="14px"
+                            fontWeight="normal"
+                            transition="all 0.3s ease"
+                            whiteSpace="nowrap"
+                            _hover={{
+                                bg: "transparent",
+                                border: "1px solid",
+                                transform: "scale(1.01)",
+                                boxShadow: "0px 0px 44px 0px rgba(212, 174, 251, 0.5)"
+                            }}
+                            _active={{
+                                transform: "scale(0.95)"
+                            }}
+                        >
+                            Ja, ich will einen Termin!
+                        </Button>
+
+                            {/* Trust Indicators */}
+                            <Box 
+                                display="flex" 
+                                justifyContent="center" 
+                                gap={isSmallScreen ? "4%" : "3%"}
+                                flexWrap="wrap"
+                                pt="2vh"
                             >
-                                <Box fontSize="18px">
-                                    {isLoading ? 'Wird gesendet...' : 'Jetzt loslegen!'}
-                                </Box>
-                            </Button>
+                                <Text fontSize={isSmallScreen ? "2.5vw" : "0.7vw"} color="gray.600" display="flex" alignItems="center" gap="1%">
+                                    ⚡ Schnelle Antwort
+                                </Text>
+                                <Text fontSize={isSmallScreen ? "2.5vw" : "0.7vw"} color="gray.600" display="flex" alignItems="center" gap="1%">
+                                    ✓ 100% Kostenlos
+                                </Text>
+                                <Text fontSize={isSmallScreen ? "2.5vw" : "0.7vw"} color="gray.600" display="flex" alignItems="center" gap="1%">
+                                    🔒 SSL-Verschlüsselt
+                                </Text>
+                            </Box>
 
                         </VStack>
                     </Box>
 
+                    {/* Bottom Trust Badge */}
                     <Box
                         textAlign="center"
-                        fontSize="0.75vw"
-                        color="blackAlpha.600"
+                        fontSize={isSmallScreen ? "2.8vw" : "0.8vw"}
+                        color="gray.500"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        gap="2%"
                     >
-                        🔒 Deine Daten werden vertraulich behandelt
+                        <Text>🔒</Text>
+                        <Text>Deine Daten sind sicher und werden vertraulich behandelt</Text>
                     </Box>
 
                 </VStack>
